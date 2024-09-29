@@ -58,6 +58,11 @@ void setup()
     delay(2000);
 #endif
 
+#if defined(PIN_PWREN) && defined(PIN_PWRSW) && PWOFF_TIME > 0
+	pinMode(PIN_PWRSW, INPUT_PULLUP);
+	pinMode(PIN_PWREN, OUTPUT);
+	digitalWrite(PIN_PWREN, HIGH);
+#endif
     Serial.println();
     Serial.println();
     Serial.println();
@@ -136,11 +141,38 @@ void loop()
     }
     loopTime = micros();
 #endif
+	unsigned long now = millis();
     #if defined(PRINT_STATE_EVERY_MS) && PRINT_STATE_EVERY_MS > 0
-        unsigned long now = millis();
         if(lastStatePrint + PRINT_STATE_EVERY_MS < now) {
             lastStatePrint = now;
             SerialCommands::printState();
         }
     #endif
+	#if defined(PIN_PWREN) && defined(PIN_PWRSW) && PWOFF_TIME > 0
+		static unsigned long startState = 0;
+		static bool firstRelease = false;
+		static int sameCount = 0;
+		static int lastState = LOW;
+		int currentState = digitalRead(PIN_PWRSW);
+		bool stateChanged = false;
+		if ( currentState != lastState ) {
+			stateChanged = true;
+			sameCount = 0;
+			startState = millis();
+			lastState = currentState;
+		}
+		else {
+			sameCount++;
+		}
+		if ( sameCount > 10 ) {
+			if ( firstRelease == false && currentState == HIGH ) {
+				firstRelease = true;
+			}
+			if ( firstRelease && currentState == LOW ) { // 2nd or later push
+				if ( startState > 0 && now - startState > PWOFF_TIME * 1000 ) {
+					digitalWrite( PIN_PWREN, LOW ); // shut down
+				}
+			}
+		}
+	#endif
 }

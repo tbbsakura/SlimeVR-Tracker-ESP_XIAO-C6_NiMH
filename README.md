@@ -1,10 +1,14 @@
 # SlimeVR Tracker firmware for Seeed Stuidio XIAO ESP32C6
 
-- This is a detached fork of [SlimeVR Tracker firmware for ESP](https://github.com/SlimeVR/SlimeVR-Tracker-ESP)
-- Just for the hardware [https://oshwlab.com/tbbsakura/nimh-slime_v1-1](https://oshwlab.com/tbbsakura/nimh-slime_v1-1) .
-- Use the branch [XIAO_C6-NiMH](https://github.com/tbbsakura/SlimeVR-Tracker-ESP_XIAO-C6_NiMH/tree/XIAO_C6-NiMH) .
-
-
+* This is a detached fork of [SlimeVR Tracker firmware for ESP](https://github.com/SlimeVR/SlimeVR-Tracker-ESP)
+* Just for the hardware [https://oshwlab.com/tbbsakura/nimh-slime_v1-1](https://oshwlab.com/tbbsakura/nimh-slime_v1-1) .
+    * Using ESP32C6, driven by one NiMH Battery.
+    * Tact switch, long push to turn on/off tracker.
+* Use the branch [XIAO_C6-NiMH](https://github.com/tbbsakura/SlimeVR-Tracker-ESP_XIAO-C6_NiMH/tree/XIAO_C6-NiMH) .
+    * Build setting for ESP32C6
+    * Tact switch functions.
+    * Auto power off when battery is low (not deep sleep, but turning off the power module.)
+    * Battery sensor functions for NiMH, around 1.2V.
 
 Followings are the original SlimeVR's ReadMe.
 
