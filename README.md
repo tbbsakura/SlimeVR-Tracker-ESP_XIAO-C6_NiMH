@@ -1,3 +1,9 @@
+# SlimeVR Tracker firmware for Seeed Stuidio XIAO ESP32C6
+
+This is a detached fork of [SlimeVR Tracker firmware for ESP](https://github.com/SlimeVR/SlimeVR-Tracker-ESP)
+Just for the hardware [https://oshwlab.com/tbbsakura/nimh-slime_v1-1](https://oshwlab.com/tbbsakura/nimh-slime_v1-1) .
+Use the branch [XIAO_C6-NiMH](https://github.com/tbbsakura/SlimeVR-Tracker-ESP_XIAO-C6_NiMH/tree/XIAO_C6-NiMH) .
+
 # SlimeVR Tracker firmware for ESP
 
 Firmware for ESP8266 / ESP32 microcontrollers and different IMU sensors to use them as a vive-like trackers in VR.
