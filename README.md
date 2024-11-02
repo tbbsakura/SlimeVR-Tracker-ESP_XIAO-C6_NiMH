@@ -1,7 +1,7 @@
 # SlimeVR Tracker firmware for Seeed Stuidio XIAO ESP32C6
 
 * This is a detached fork of [SlimeVR Tracker firmware for ESP](https://github.com/SlimeVR/SlimeVR-Tracker-ESP)
-* Just for the hardware [https://oshwlab.com/tbbsakura/nimh-slime_v1-1](https://oshwlab.com/tbbsakura/nimh-slime_v1-1) .
+* Just for the hardware [https://oshwlab.com/tbbsakura/nimh-slime_v2p](https://oshwlab.com/tbbsakura/nimh-slime_v2p) .
     * Using ESP32C6, driven by one NiMH Battery.
     * Tact switch, long push to turn on/off tracker.
 * Use the branch [XIAO_C6-NiMH](https://github.com/tbbsakura/SlimeVR-Tracker-ESP_XIAO-C6_NiMH/tree/XIAO_C6-NiMH) .
@@ -79,7 +79,7 @@ Firmware can work with both ESP8266 and ESP32. Please edit `defines.h` and set y
     > The LED will be lit continuously. If you have the tracker connected via USB and open the serial console, you will see text prompts in addition to the LEDs. You can only calibrate 1 IMU at a time.
 
     Flip it back up while the LED is still solid. Wait a few seconds, do not touch the device.
-    
+
   - **Step 1: It will flash 3 times when gyroscope calibration begins.**
 
     > If done incorrectly, this step is the most likely source of constant drift.
@@ -94,9 +94,9 @@ Firmware can work with both ESP8266 and ESP32. Please edit `defines.h` and set y
     > If you are unable to keep it on a flat surface without touching, press the device against a wall, it does not have to be absolutely perfect.
 
     **There will be two very short blinks when each position is recorded.**
-    
+
     Rotate the device 90 or 180 degrees in any direction. It should be on a different side each time. Continue to rotate until all 6 sides have been recorded.
-    
+
     The last position has a long flash when recorded, indicating exit from calibration mode.
 
   #### Additional info for BMI160
