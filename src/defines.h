@@ -26,12 +26,13 @@
 // ================================================
 
 // Set parameters of IMU and board used
+#if 0
 #define IMU IMU_BNO085
 #define SECOND_IMU IMU
 #define BOARD BOARD_SLIMEVR
 #define IMU_ROTATION DEG_270
 #define SECOND_IMU_ROTATION DEG_270
-
+#endif
 #define PRIMARY_IMU_OPTIONAL false
 #define SECONDARY_IMU_OPTIONAL true
 
@@ -78,6 +79,38 @@ IMU_DESC_ENTRY(IMU_BMP160, PRIMARY_IMU_ADDRESS_ONE, IMU_ROTATION, PIN_IMU_SCL, P
 //   LED_INVERTED
 //     - false for output 3.3V on high
 //     - true for pull down to GND on high
+
+// OVERWRITE DEFINITION
+#define BOARD_XIAO_ESP32C6 99999
+#define BOARD BOARD_XIAO_ESP32C6
+
+#if BOARD == BOARD_XIAO_ESP32C6
+	#define BATT_NIMH
+	#define NIMH_VOL_AVG_COUNT 20
+	//#define BATTERY_MONITOR BAT_EXTERNAL
+	#define BATTERY_SHIELD_RESISTANCE 0
+	#define BATTERY_SHIELD_R1 1
+	#define BATTERY_SHIELD_R2 0
+	// ADCMultiplier to be 1/1
+
+	#define IMU IMU_BNO085
+	#define IMU_ROTATION DEG_0
+	#define SECOND_IMU IMU_BNO085
+	#define SECOND_IMU_ROTATION DEG_0
+
+	#define PIN_IMU_SDA 22 // D4 // default: SDA, GPIO22
+	#define PIN_IMU_SCL 23 // D5 // default: SCL, GPIO23
+	#define PIN_IMU_INT 2 // D2 // INT
+	#define PIN_IMU_INT_2 255 // do not use INT
+	#define PIN_BATTERY_LEVEL 0 // GPIO0
+	#define LED_PIN 18 // D10  //
+	#define LED_INVERTED true
+
+	#define PIN_PWRSW 1 // D1
+	#define PIN_PWREN 21 // D3
+	#define PWOFF_TIME 2 // When PIN_PWREN is puhsed (LOW) for n seconds, turn the tracker off
+
+#endif
 
 // Board-specific configurations
 #if BOARD == BOARD_SLIMEVR

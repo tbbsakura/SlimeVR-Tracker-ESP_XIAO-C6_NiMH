@@ -101,6 +101,34 @@ void BatteryMonitor::Loop()
             #endif
             if (voltage > 0) //valid measurement
             {
+				#ifdef BATT_NIMH
+					static int pwCount = 0;
+					static std::vector<float> volStore(NIMH_VOL_AVG_COUNT, voltage );
+					volStore[pwCount] = voltage;
+					pwCount++;
+					if ( pwCount >= NIMH_VOL_AVG_COUNT) pwCount = 0;
+					float sumVoltage = 0.0;
+					for (int i = 0 ; i < NIMH_VOL_AVG_COUNT; i++ ) {
+						sumVoltage += volStore[i];
+					}
+					voltage = sumVoltage / NIMH_VOL_AVG_COUNT;
+				#endif
+				#ifdef BATT_NIMH
+                if (voltage > 1.39f)
+                    level = 1.0f;
+				else if (voltage > 1.28f) // 90-100%
+					level = (voltage - 1.28f)/(1.39f-1.28f) * 0.1f + 0.9f;
+                else if (voltage > 1.23f) // 50-90%
+					level = (voltage - 1.23f)/(1.28f-1.23f) * 0.4f + 0.5f;
+                else if (voltage > 1.19f) // 16-50%
+					level = (voltage - 1.19f)/(1.23f-1.19f) * 0.34f + 0.16f;
+                else if (voltage > 1.10f) // 5-16%
+					level = (voltage - 1.10f)/(1.19f-1.10f) * 0.11f + 0.05f;
+                else if (voltage > 1.0f) // 0-5%
+                    level = (voltage * 0.1f)/(1.1f-1.0f) * 0.05f; // + 0.00f;
+				else
+					level = 0;
+				#else
                 // Estimate battery level, 3.2V is 0%, 4.17V is 100% (1.0)
                 if (voltage > 3.975f)
                     level = (voltage - 2.920f) * 0.8f;
@@ -114,6 +142,7 @@ void BatteryMonitor::Loop()
                     level = (voltage - 3.200f) * 0.3f;
 
                 level = (level - 0.05f) / 0.95f; // Cut off the last 5% (3.36V)
+				#endif
 
                 if (level > 1)
                     level = 1;
@@ -124,7 +153,16 @@ void BatteryMonitor::Loop()
                     if (voltage < BATTERY_LOW_POWER_VOLTAGE)
                     {
                         #if defined(BATTERY_LOW_VOLTAGE_DEEP_SLEEP) && BATTERY_LOW_VOLTAGE_DEEP_SLEEP
-                            ESP.deepSleep(0);
+							#if defined(BATT_NIMH) && defined(PIN_PWREN)
+				                networkConnection.sendBatteryLevel(voltage, level);
+								delay(500);
+								WiFi.disconnect(true);
+								delay(500);
+								digitalWrite( PIN_PWREN, LOW ); // shut down
+								delay(2500);
+							#else
+	                            ESP.deepSleep(0);
+							#endif
                         #else
                             statusManager.setStatus(SlimeVR::Status::LOW_BATTERY, true);
                         #endif
