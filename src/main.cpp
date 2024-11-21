@@ -62,6 +62,12 @@ void setup()
 	pinMode(PIN_PWRSW, INPUT_PULLUP);
 	pinMode(PIN_PWREN, OUTPUT);
 	digitalWrite(PIN_PWREN, HIGH);
+
+	//If GPIO14 is set low level, it uses the built-in antenna;
+	// if it set to high level, it uses the external antenna.
+	// Default is low level.
+	//pinMode(14, OUTPUT);
+	//digitalWrite(14, HIGH);
 #endif
     Serial.println();
     Serial.println();
